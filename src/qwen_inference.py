@@ -71,9 +71,9 @@ def generate_text(model, tokenizer, prompt: str) -> str:
 
 def summarize_and_save(json_path: str, output_md: str):
     model, tokenizer = load_model()
-    #dialogue = load_dialogue(json_path)
+    dialogue = load_dialogue(json_path)
     
-    dialogue = "Speaker A: Oi, tudo bem?\nSpeaker B: Tudo bem, e você?\nSpeaker A: Muito bem, obrigado!\nSpeaker B: De nada!"
+    #dialogue = "Speaker A: Oi, tudo bem?\nSpeaker B: Tudo bem, e você?\nSpeaker A: Muito bem, obrigado!\nSpeaker B: De nada!"
     
     markdown = generate_text(
         model,
@@ -86,7 +86,7 @@ def summarize_and_save(json_path: str, output_md: str):
     print(f"Markdown saved at: {output_md}")
 
 if __name__ == "__main__":
-    json_path = "data/transcripts/2025-04-07 11-57-48_transcript.json"
-    output_md = "data/summaries/2025-04-07 11-57-48_summary.md"
+    json_path = "data/transcripts/2025-04-08 09-02-19_transcript_backup.json"
+    output_md = "data/summaries/2025-04-08 09-02-19_summary.md"
 
     summarize_and_save(json_path, output_md)
