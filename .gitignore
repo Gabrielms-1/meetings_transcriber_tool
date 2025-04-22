@@ -2,3 +2,6 @@
 .cursorignore
 data/
 .cursor/
+*.txt
+*.DS_Store
+*__pycache__/

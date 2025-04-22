@@ -1,7 +1,8 @@
 from moviepy import VideoFileClip
 import os
+import tempfile
 
-def convert_mov_to_wav(input_path: str, output_path: str, sample_rate: int = 44100, codec: str = 'mp3', bitrate: str = '192k'):
+def convert_mov_to_wav(input_path: str, sample_rate: int = 44100, codec: str = 'mp3', bitrate: str = '192k'):
     """
     Convert a .mov file to .wav using MoviePy.
 
@@ -12,10 +13,18 @@ def convert_mov_to_wav(input_path: str, output_path: str, sample_rate: int = 441
         codec: codec for the output audio file (default: mp3).
         bitrate: bitrate for the output audio file (default: 192k).
     """
+    
     clip = VideoFileClip(input_path)
     audio = clip.audio
-    audio.write_audiofile(output_path, fps=sample_rate, codec=codec, bitrate=bitrate)
+
+    with tempfile.NamedTemporaryFile(suffix=f".{codec}", delete=False) as temp_f:
+        temp_file_path = temp_f.name
+    
+    audio.write_audiofile(temp_file_path, fps=sample_rate, codec=codec, bitrate=bitrate)
     clip.close()
+    audio.close()
+    
+    return temp_file_path
 
 if __name__ == "__main__":
 
@@ -29,6 +38,5 @@ if __name__ == "__main__":
 
     if os.path.exists(input_path):
         convert_mov_to_wav(input_path, output_path)
-        print(f"Conversion complete: {output_path}")
     else:
         print(f"Input file not found: {input_path}")
