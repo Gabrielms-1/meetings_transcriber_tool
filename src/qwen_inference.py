@@ -60,7 +60,7 @@ def generate_text(model, tokenizer, prompt: str) -> str:
 
     generated_ids = model.generate(
         **model_inputs,
-        max_new_tokens=1024 # Increased max_new_tokens for potentially longer summaries
+        max_new_tokens=4096 # Increased max_new_tokens for potentially longer summaries
     )
     generated_ids = [
         output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
