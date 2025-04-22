@@ -18,7 +18,7 @@ def start_instance():
     instance.reload()
     ip = instance.public_ip_address
     print(f"Instance {INSTANCE_ID} started")
-    print(f"IP: {ip}")
+    print(f"IP: {ip.replace('.', '-')}")
 
 if __name__ == "__main__":
     start_instance()
