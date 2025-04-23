@@ -25,15 +25,11 @@ def start_instance():
 
     return instance.public_ip_address
 
-def run_server_via_ssm(instance_id: str, timeout: int = 300):
+def run_server_via_ssm(instance_id: str, timeout: int):
     cmd = [
-        "cd /home/ubuntu/meetings_transcriber_tool",
-        "source venv/bin/activate",
-        "git checkout infrastructure",
-        "git pull origin infrastructure",
-        "cd src/infra",
-        "nohup /home/ubuntu/meetings_transcriber_tool/venv/bin/uvicorn app:app --host 0.0.0.0 --port 8000 --workers 1 &",
-        "sleep 30"
+        "source /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
+        cd /home/ubuntu/meetings_transcriber_tool && \
+        ./start_server.sh"
     ]
 
     resp = ssm.send_command(
@@ -64,13 +60,15 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
         try:
             r = requests.get(url, timeout=3)
             if r.status_code == 200:
-                print("API is available!")
+                print("API is available! Time elapsed:", time.time() - start_time)
                 return True
         except Exception as e:
+            print(f"Waiting... {e}")
             time.sleep(3)
     raise TimeoutError(f"Timeout waiting for API at {url}")
 
 def call_endpoint(ip: str, json_path: str, output_path: str):
+    print("Calling endpoint...")
     print(f"IP: {ip}")
     url = f"http://{ip}:8000/summarize"
     wait_for_api(ip)
@@ -83,8 +81,8 @@ def call_endpoint(ip: str, json_path: str, output_path: str):
         out.write(resp.text)
 
 if __name__ == "__main__":
+    ip = "44.192.67.210"#start_instance()
     
-    ip = "8.207.243.103" #start_instance()
     print("Instance is running at:", ip)
     try:
         run_server_via_ssm(INSTANCE_ID, timeout=400)
@@ -99,8 +97,8 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error calling endpoint: {e}")
 
-    # print("Stopping instance...")
-    # inst = ec2.Instance(INSTANCE_ID)
-    # inst.stop()
-    # inst.wait_until_stopped()
-    # print("Instance stopped.")
+    print("Stopping instance...")
+    inst = ec2.Instance(INSTANCE_ID)
+    inst.stop()
+    inst.wait_until_stopped()
+    print("Instance stopped.")
