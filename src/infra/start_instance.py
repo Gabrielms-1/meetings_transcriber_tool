@@ -26,9 +26,15 @@ def start_instance():
     return instance.public_ip_address
 
 def run_server_via_ssm(instance_id: str, timeout: int):
+    # cmd = [
+    #     "source /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
+    #     cd /home/ubuntu/meetings_transcriber_tool && \
+    #     ./start_server.sh"
+    # ]
+
     cmd = [
-        "source /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
-        cd /home/ubuntu/meetings_transcriber_tool && \
+        "cd /home/ubuntu/meetings_transcriber_tool && \
+        source venv/bin/activate && \
         ./start_server.sh"
     ]
 

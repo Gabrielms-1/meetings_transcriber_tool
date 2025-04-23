@@ -5,6 +5,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.responses import PlainTextResponse
 import torch
+import uvicorn
 
 logging.basicConfig(level=logging.INFO)
 
@@ -61,5 +62,6 @@ async def infer(request: Request, file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    import uvicorn
+    logging.info("Starting server...")
+    exit()
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
