@@ -10,11 +10,11 @@
     cd /home/ubuntu/meetings_transcriber_tool || { echo "Failed to cd into project dir" >> $LOG_FILE; exit 1; }
     echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
 
-    deactivate &> /dev/null || true 
+    # deactivate &> /dev/null || true 
     
-    echo "[$(($(date +%s) - start_time))s] Activating venv..." >> $LOG_FILE
-    source venv/bin/activate || { echo "Failed to activate venv" >> $LOG_FILE; exit 1; }
-    echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
+    # echo "[$(($(date +%s) - start_time))s] Activating venv..." >> $LOG_FILE
+    # source venv/bin/activate || { echo "Failed to activate venv" >> $LOG_FILE; exit 1; }
+    # echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
 
     echo "[$(($(date +%s) - start_time))s] Checking out branch..." >> $LOG_FILE
     git checkout llama3.1 >> $LOG_FILE 2>&1 

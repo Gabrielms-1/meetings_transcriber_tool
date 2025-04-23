@@ -69,8 +69,8 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
                 print("API is available! Time elapsed:", time.time() - start_time)
                 return True
         except Exception as e:
-            print(f"Waiting... {e}")
             time.sleep(3)
+    
     raise TimeoutError(f"Timeout waiting for API at {url}")
 
 def call_endpoint(ip: str, json_path: str, output_path: str):
