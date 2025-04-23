@@ -1,8 +1,8 @@
     #!/bin/bash
     set -e 
 
-    LOG_FILE="./startup_script.log"
-    UVICORN_LOG_FILE="./uvicorn.log"
+    LOG_FILE="/home/ubuntu/meetings_transcriber_tool/startup_script.log"
+    UVICORN_LOG_FILE="/home/ubuntu/meetings_transcriber_tool/uvicorn.log"
     echo "--- Starting server setup at $(date) ---" > $LOG_FILE
     start_time=$(date +%s)
 
@@ -16,7 +16,7 @@
     # source venv/bin/activate || { echo "Failed to activate venv" >> $LOG_FILE; exit 1; }
     # echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
     echo "[$(($(date +%s) - start_time))s] Changing to infra directory..." >> $LOG_FILE
-    cd /home/ubuntu/meetings_transcriber_tool/src/infra 
+    cd /home/ubuntu/meetings_transcriber_tool/src/infra
     echo "[$(($(date +%s) - start_time))s] Done. Current directory: $(pwd)" >> $LOG_FILE
 
     UVICORN_CMD="/home/ubuntu/meetings_transcriber_tool/venv/bin/uvicorn"
