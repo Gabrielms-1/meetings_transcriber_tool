@@ -67,7 +67,6 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
                 print("API is available!")
                 return True
         except Exception as e:
-            print(f"Waiting... {e}")
             time.sleep(3)
     raise TimeoutError(f"Timeout waiting for API at {url}")
 
@@ -85,7 +84,7 @@ def call_endpoint(ip: str, json_path: str, output_path: str):
 
 if __name__ == "__main__":
     
-    ip = "44.223.36.220" #start_instance()
+    ip = "8.207.243.103" #start_instance()
     print("Instance is running at:", ip)
     try:
         run_server_via_ssm(INSTANCE_ID, timeout=400)
@@ -100,8 +99,8 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error calling endpoint: {e}")
 
-    print("Stopping instance...")
-    inst = ec2.Instance(INSTANCE_ID)
-    inst.stop()
-    inst.wait_until_stopped()
-    print("Instance stopped.")
+    # print("Stopping instance...")
+    # inst = ec2.Instance(INSTANCE_ID)
+    # inst.stop()
+    # inst.wait_until_stopped()
+    # print("Instance stopped.")

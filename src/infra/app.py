@@ -1,9 +1,12 @@
 import json
+import logging
 from contextlib import asynccontextmanager
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.responses import PlainTextResponse
 import torch
+
+logging.basicConfig(level=logging.INFO)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +38,9 @@ def summarize_dialogue(model, tokenizer, dialogue: dict) -> str:
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
     output_ids = model.generate(**inputs, max_new_tokens=1024)
     markdown = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+    
+    logging.debug(f"Summarized dialogue: {type(markdown)}")
+    
     return markdown
 
 
@@ -48,7 +54,9 @@ async def infer(request: Request, file: UploadFile = File(...)):
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON")
 
+    logging.info("Summarizing dialogue...")
     markdown = summarize_dialogue(request.app.state.model, request.app.state.tokenizer, dialogue)
+    
     return markdown
 
 
