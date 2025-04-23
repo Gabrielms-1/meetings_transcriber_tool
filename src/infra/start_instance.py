@@ -29,8 +29,8 @@ def run_server_via_ssm(instance_id: str, timeout: int = 300):
     cmd = [
         "cd /home/ubuntu/meetings_transcriber_tool",
         "source venv/bin/activate",
-        "git checkout infrastructure",
-        "git pull origin infrastructure",
+        "git checkout main",
+        "git pull origin main",
         "cd src/infra",
         "nohup /home/ubuntu/meetings_transcriber_tool/venv/bin/uvicorn app:app --host 0.0.0.0 --port 8000 --workers 1 &",
         "sleep 30"
