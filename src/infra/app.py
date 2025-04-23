@@ -16,10 +16,7 @@ async def lifespan(app: FastAPI):
     app.state.tokenizer = AutoTokenizer.from_pretrained(model_name)
     yield
 
-
-
 app = FastAPI(lifespan=lifespan)
-
 
 def summarize_dialogue(model, tokenizer, dialogue: dict) -> str:
     """
@@ -38,8 +35,12 @@ def summarize_dialogue(model, tokenizer, dialogue: dict) -> str:
     )
 
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+    input_length = inputs.input_ids.shape[1]
     output_ids = model.generate(**inputs, max_new_tokens=1024)
-    markdown = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+
+    generated_ids = output_ids[0][input_length:]
+    markdown = tokenizer.decode(generated_ids, skip_special_tokens=True)
+
     return markdown
 
 
@@ -54,6 +55,7 @@ async def infer(request: Request, file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Invalid JSON")
 
     markdown = summarize_dialogue(request.app.state.model, request.app.state.tokenizer, dialogue)
+    
     return markdown
 
 

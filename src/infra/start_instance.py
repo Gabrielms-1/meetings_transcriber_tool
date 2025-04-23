@@ -64,7 +64,7 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
         try:
             r = requests.get(url, timeout=3)
             if r.status_code == 200:
-                print("API is available!")
+                print("API is available! Time elapsed:", time.time() - start_time)
                 return True
         except Exception as e:
             print(f"Waiting... {e}")
