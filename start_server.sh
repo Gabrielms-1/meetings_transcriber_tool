@@ -17,11 +17,11 @@
     # echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
 
     echo "[$(($(date +%s) - start_time))s] Checking out branch..." >> $LOG_FILE
-    git checkout llama3.1 >> $LOG_FILE 2>&1 
+    git checkout infrastructure >> $LOG_FILE 2>&1 
     echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
     
     echo "[$(($(date +%s) - start_time))s] Pulling code..." >> $LOG_FILE
-    git pull origin llama3.1 >> $LOG_FILE 2>&1 || { echo "Git pull failed" >> $LOG_FILE; exit 1; }
+    git pull origin infrastructure >> $LOG_FILE 2>&1 || { echo "Git pull failed" >> $LOG_FILE; exit 1; }
     echo "[$(($(date +%s) - start_time))s] Done." >> $LOG_FILE
 
     cd src/infra 
