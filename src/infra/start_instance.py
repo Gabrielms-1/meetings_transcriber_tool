@@ -85,7 +85,7 @@ def call_endpoint(ip: str, json_path: str, output_path: str):
 
 if __name__ == "__main__":
     
-    ip = start_instance()
+    ip = "44.223.36.220" #start_instance()
     print("Instance is running at:", ip)
     try:
         run_server_via_ssm(INSTANCE_ID, timeout=400)
