@@ -8,3 +8,5 @@ pillow
 sentencepiece
 transformers
 accelerate
+fastapi
+uvicorn
