@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     model_name = "Qwen2.5-7B-Instruct-AWQ"
-    model_path = f"/home/ubuntu/meetings_transcriber_tool/models/{model_name}"
+    model_path = f"/home/ubuntu/hf_models/{model_name}"
     logging.info(f"Loading model from {model_path}")
     app.state.model = AutoModelForCausalLM.from_pretrained(
         model_path,
