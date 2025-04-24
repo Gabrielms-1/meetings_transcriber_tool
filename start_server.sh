@@ -38,10 +38,10 @@
         --threads $THREADS \
         --bind $BIND \
         --access-logfile $LOG_FILE \
-        --error-logfile $ERROR_LOG
+        --error-logfile $ERROR_LOG &
 
     GUNICORN_PID=$!
-    
+    echo "Gunicorn PID: $GUNICORN_PID" >> "${LOG_FILE}"
     wait $GUNICORN_PID
 
     echo "--- Server setup script finished at $(date) ---" >> "${LOG_FILE}"
