@@ -31,7 +31,7 @@
 
     cd "$APP_DIR"
 
-    exec gunicorn \
+    gunicorn \
         -k uvicorn.workers.UvicornWorker \
         $MODULE \
         -w $WORKERS \
@@ -39,7 +39,11 @@
         --bind $BIND \
         --access-logfile $LOG_FILE \
         --error-logfile $ERROR_LOG
-        
+
+    GUNICORN_PID=$!
+    
+    wait $GUNICORN_PID
+
     echo "--- Server setup script finished at $(date) ---" >> "${LOG_FILE}"
 
     exit 0 
