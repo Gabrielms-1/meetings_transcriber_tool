@@ -3,9 +3,12 @@
 
     VENV_PATH="/home/ubuntu/meetings_transcriber_tool/venv_new"
     APP_DIR="/home/ubuntu/meetings_transcriber_tool/src/infra"
-    LOG_FILE="/home/ubuntu/meetings_transcriber_tool/startup_access.log"
-    ERROR_LOG="/home/ubuntu/meetings_transcriber_tool/api_error.log"
+    LOG_FILE="/home/ubuntu/meetings_transcriber_tool/logs/startup_access.log"
+    ERROR_LOG="/home/ubuntu/meetings_transcriber_tool/logs/api_error.log"
     
+    rm -f $LOG_FILE
+    rm -f $ERROR_LOG
+
     WORKERS=1
     THREADS=4
     PORT=8000
