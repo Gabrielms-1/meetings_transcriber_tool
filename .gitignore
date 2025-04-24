@@ -6,3 +6,6 @@ data/
 *__pycache__/
 *.md
 venv/
+models/
+.env
+.cursor
