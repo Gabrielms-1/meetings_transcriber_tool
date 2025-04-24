@@ -11,10 +11,12 @@ INSTANCE_ID = "i-07d18e77ae41a091e"
 JSON_PATH = 'data/transcripts/2025-04-08 09-02-19_transcript_backup.json'
 OUTPUT_PATH = 'data/summaries/GA-Box-2025-04-08.md'
 TIMEOUT = 600
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
 logger = logging.getLogger(__name__)
 session = requests.Session()
 retry_strategy = Retry(
@@ -48,26 +50,6 @@ def start_instance():
 
     return instance.public_ip_address
 
-def run_server_via_ssm(instance_id: str, timeout: int):
-    # cmd = [
-    #     "source /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
-    #     cd /home/ubuntu/meetings_transcriber_tool && \
-    #     ./start_server.sh"
-    # ]
-
-    cmd = [
-        "cd /home/ubuntu/meetings_transcriber_tool",
-        "chmod +x start_server.sh",
-        "bash start_server.sh"
-    ]
-
-    resp = ssm.send_command(
-        InstanceIds=[instance_id],
-        DocumentName="AWS-RunShellScript",
-        Parameters={'commands': cmd},
-    )
-    
-
 def wait_for_api(ip, port=8000, path="/docs", timeout=200):
     url = f"http://{ip}:{port}{path}"
     logger.info(f"Waiting for {url} to be available...")
@@ -83,6 +65,30 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
             time.sleep(3)
     
     raise TimeoutError(f"Timeout waiting for API at {url}")
+
+def run_server_via_ssm(instance_id: str, timeout: int, ip: str):
+    # cmd = [
+    #     "source /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
+    #     cd /home/ubuntu/meetings_transcriber_tool && \
+    #     ./start_server.sh"
+    # ]
+
+    if wait_for_api(ip, 100):
+        logger.info("API is already running")
+        return
+
+    cmd = [
+        "cd /home/ubuntu/meetings_transcriber_tool",
+        "chmod +x start_server.sh",
+        "bash start_server.sh"
+    ]
+
+    resp = ssm.send_command(
+        InstanceIds=[instance_id],
+        DocumentName="AWS-RunShellScript",
+        Parameters={'commands': cmd},
+    )
+    
 
 def call_endpoint(ip: str, json_path: str, output_path: str):
     url = f"http://{ip}:8000/summarize"
@@ -102,7 +108,7 @@ if __name__ == "__main__":
     
     logger.info(f"Instance is running at: {ip_address}")
     try:
-        run_server_via_ssm(INSTANCE_ID, timeout=600)
+        run_server_via_ssm(INSTANCE_ID, timeout=600, ip=ip_address)
         logger.info("Server is running at port 8000")
     except Exception as e:
         logger.error(f"Error running server: {e}")
