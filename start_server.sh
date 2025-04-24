@@ -12,6 +12,17 @@
     BIND="0.0.0.0:$PORT"
     MODULE="app:app"
 
+    if lsof -i :$PORT -t > /dev/null; then
+        echo "  Stopping FastAPI via Gunicorn + UvicornWorker $(date) " >> "${LOG_FILE}"
+        echo "  Stopping FastAPI via Gunicorn + UvicornWorker"
+        echo "  virtualenv: $VENV_PATH"
+        echo "  workdir: $APP_DIR"
+        echo "  workers: $WORKERS, threads: $THREADS"
+        echo "  binding: $BIND"
+        echo ""
+    fi
+
+
     echo "🚀 Starting FastAPI via Gunicorn + UvicornWorker"
     echo "  virtualenv: $VENV_PATH"
     echo "  workdir: $APP_DIR"
