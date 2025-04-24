@@ -13,4 +13,6 @@ if __name__ == "__main__":
     os.makedirs(output_dir, exist_ok=True)
 
     buffer = convert_mov_to_wav(input_path)
-    transcript_audio_to_text(buffer, output_path)
+    conversation = transcript_audio_to_text(buffer, output_path)
+
+    

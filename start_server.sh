@@ -19,7 +19,9 @@
     echo "  binding: $BIND"
     echo ""
 
+    echo "Activating virtual environment... at $(date) " >> "${LOG_FILE}"
     source "$VENV_PATH/bin/activate"
+    echo "Virtual environment activated at $(date) " >> "${LOG_FILE}"
 
     cd "$APP_DIR"
 

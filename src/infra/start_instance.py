@@ -114,7 +114,7 @@ def call_endpoint(ip: str, json_path: str, output_path: str):
     logger.info(f"Output saved to {output_path}")
 
 if __name__ == "__main__":
-    ip_address = "44.192.67.210"#start_instance()
+    ip_address = start_instance()
     
     logger.info(f"Instance is running at: {ip_address}")
     try:
