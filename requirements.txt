@@ -1,7 +1,8 @@
 anyio
 assemblyai
-boto3
 huggingface-hub
 moviepy
 numpy 
 pillow
+ffmepg-python
+google-genai
