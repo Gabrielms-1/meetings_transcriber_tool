@@ -77,5 +77,5 @@ async def infer(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     logging.info("Starting server...")
-    exit()
+    
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
