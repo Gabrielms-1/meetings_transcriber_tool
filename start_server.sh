@@ -20,7 +20,6 @@
         lsof -ti :$PORT | xargs -r kill -9
     fi
 
-
     echo "  Starting FastAPI via Gunicorn + UvicornWorker $(date) " >> "${LOG_FILE}"
     echo "  virtualenv: $VENV_PATH" >> "${LOG_FILE}"
     echo "  workdir: $APP_DIR" >> "${LOG_FILE}"
