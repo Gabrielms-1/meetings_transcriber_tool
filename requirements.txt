@@ -10,3 +10,4 @@ transformers
 accelerate
 fastapi
 uvicorn
+git+https://github.com/QwenLM/AutoAWQ.git#egg=autoawq
