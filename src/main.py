@@ -14,5 +14,17 @@ if __name__ == "__main__":
 
     buffer = convert_mov_to_wav(input_path)
     conversation = transcript_audio_to_text(buffer, output_path)
-
     
+    map_speakers = {
+        "A": "Speaker 1",
+        "B": "Speaker 2",
+        "C": "Speaker 3",
+        "D": "Speaker 4",
+        "E": "Speaker 5",
+    }
+
+    conversation_text = ""
+    for turn in conversation:
+        conversation_text += f"{map_speakers[list(turn.keys())[0]]}: {turn[list(turn.keys())[0]]}\n"
+    
+    conversation_text

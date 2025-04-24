@@ -15,7 +15,7 @@ def main():
 
     
     config = types.GenerateContentConfig(
-        max_output_tokens=500,
+        max_output_tokens=200,
         temperature=0.5,
         system_instruction=pre_prompt,
     )
@@ -28,6 +28,8 @@ def main():
         contents=json.dumps(dialogue, ensure_ascii=False, indent=2),
         config=config,
     )
+
+    print(f"Tokens used: {response.usage_metadata.total_token_count} - - input tokens: {response.usage_metadata.prompt_token_count} - - output tokens: {response.usage_metadata.candidates_token_count}")
 
     print(response.text)
 
