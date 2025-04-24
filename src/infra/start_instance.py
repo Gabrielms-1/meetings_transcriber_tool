@@ -73,10 +73,12 @@ def run_server_via_ssm(instance_id: str, timeout: int, ip: str):
     #     ./start_server.sh"
     # ]
 
+    logger.info(f"Checking if API is already running at {ip}")
     if wait_for_api(ip, 100):
         logger.info("API is already running")
         return
 
+    logger.info("Starting server")
     cmd = [
         "cd /home/ubuntu/meetings_transcriber_tool",
         "chmod +x start_server.sh",
