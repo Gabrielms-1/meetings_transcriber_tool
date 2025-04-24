@@ -14,21 +14,16 @@
 
     if lsof -i :$PORT -t > /dev/null; then
         echo "  Stopping FastAPI via Gunicorn + UvicornWorker $(date) " >> "${LOG_FILE}"
-        echo "  Stopping FastAPI via Gunicorn + UvicornWorker"
-        echo "  virtualenv: $VENV_PATH"
-        echo "  workdir: $APP_DIR"
-        echo "  workers: $WORKERS, threads: $THREADS"
-        echo "  binding: $BIND"
-        echo ""
+        lsof -ti :$PORT | xargs -r kill -9
     fi
 
 
-    echo "🚀 Starting FastAPI via Gunicorn + UvicornWorker"
-    echo "  virtualenv: $VENV_PATH"
-    echo "  workdir: $APP_DIR"
-    echo "  workers: $WORKERS, threads: $THREADS"
-    echo "  binding: $BIND"
-    echo ""
+    echo "  Starting FastAPI via Gunicorn + UvicornWorker $(date) " >> "${LOG_FILE}"
+    echo "  virtualenv: $VENV_PATH" >> "${LOG_FILE}"
+    echo "  workdir: $APP_DIR" >> "${LOG_FILE}"
+    echo "  workers: $WORKERS, threads: $THREADS" >> "${LOG_FILE}"
+    echo "  binding: $BIND" >> "${LOG_FILE}"
+    echo "" >> "${LOG_FILE}"
 
     echo "Activating virtual environment... at $(date) " >> "${LOG_FILE}"
     source "$VENV_PATH/bin/activate"
