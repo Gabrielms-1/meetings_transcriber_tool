@@ -32,16 +32,19 @@ lock = asyncio.Lock()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     model_name = "Qwen2.5-7B-Instruct-AWQ"
-    model_path = f"/home/ubuntu/hf_models/"
+    #model_path = f"/home/ubuntu/hf_models/"
+    model_path = f"Qwen/Qwen2.5-7B-Instruct-AWQ"
     logging.info(f"Loading model from {model_path}")
     app.state.model = AutoModelForCausalLM.from_pretrained(
         model_path,
         torch_dtype="auto",
         device_map="auto",
-        local_files_only=True,
+        # local_files_only=True,
         low_cpu_mem_usage=True
     ).eval()
-    app.state.tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+    logging.info("Model loaded successfully")
+    app.state.tokenizer = AutoTokenizer.from_pretrained(model_path)
+    logging.info("Tokenizer loaded successfully")
     yield
 
 app = FastAPI(lifespan=lifespan)
