@@ -58,7 +58,7 @@ def run_server_via_ssm(instance_id: str, timeout: int):
     cmd = [
         "cd /home/ubuntu/meetings_transcriber_tool && \
         chmod +x start_server.sh && \
-        . /home/ubuntu/meetings_transcriber_tool/venv/bin/activate && \
+        . /home/ubuntu/meetings_transcriber_tool/venv_new/bin/activate && \
         ./start_server.sh"
     ]
 
