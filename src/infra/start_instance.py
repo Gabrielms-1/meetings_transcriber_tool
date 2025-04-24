@@ -10,7 +10,7 @@ REGION = 'us-east-1'
 INSTANCE_ID = "i-07d18e77ae41a091e"
 JSON_PATH = 'data/transcripts/2025-04-08 09-02-19_transcript_backup.json'
 OUTPUT_PATH = 'data/summaries/GA-Box-2025-04-08.md'
-
+TIMEOUT = 600
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
@@ -67,22 +67,6 @@ def run_server_via_ssm(instance_id: str, timeout: int):
         Parameters={'commands': cmd},
     )
     
-    cmd_id = resp['Command']['CommandId']
-    inv = None
-    start = time.time()
-    while time.time() - start < timeout:
-        inv = ssm.get_command_invocation(CommandId=cmd_id, InstanceId=instance_id)
-        if inv['Status'] in ('Success','Failed','TimedOut','Cancelled'):
-            break
-        time.sleep(5)
-    else:
-        raise TimeoutError("SSM command did not finish in time")
-    
-    if inv['Status'] != 'Success':
-        error = inv.get('StandardErrorContent', 'Unknown error')
-        logger.error(f"SSM command failed: {error}")
-        raise RuntimeError(f"SSM command failed: {error}")
-    return inv
 
 def wait_for_api(ip, port=8000, path="/docs", timeout=200):
     url = f"http://{ip}:{port}{path}"
@@ -103,7 +87,7 @@ def wait_for_api(ip, port=8000, path="/docs", timeout=200):
 def call_endpoint(ip: str, json_path: str, output_path: str):
     url = f"http://{ip}:8000/summarize"
     logger.info(f"Calling endpoint at {url} with file {json_path}")
-    wait_for_api(ip)
+    wait_for_api(ip, TIMEOUT)
 
     with open(json_path, 'rb') as f:
         resp = requests.post(url, files={'file': f}, timeout=(5, 400))
@@ -118,7 +102,7 @@ if __name__ == "__main__":
     
     logger.info(f"Instance is running at: {ip_address}")
     try:
-        run_server_via_ssm(INSTANCE_ID, timeout=400)
+        run_server_via_ssm(INSTANCE_ID, timeout=600)
         logger.info("Server is running at port 8000")
     except Exception as e:
         logger.error(f"Error running server: {e}")

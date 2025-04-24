@@ -7,9 +7,27 @@ from fastapi.responses import StreamingResponse
 import torch
 import uvicorn
 import asyncio
+import os
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+
+logger = logging.getLogger() 
+
+log_dir = "/home/ubuntu/meetings_transcriber_tool/logs" 
+os.makedirs(log_dir, exist_ok=True)
+error_log_file = os.path.join(log_dir, "api_execution_errors.log")
+file_handler = logging.FileHandler(error_log_file)
+file_handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 lock = asyncio.Lock()
-logging.basicConfig(level=logging.INFO)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -34,11 +52,9 @@ async def health():
 
 @app.post("/summarize")
 async def infer(file: UploadFile = File(...)):
-    # Valida extensão
     if not file.filename.endswith(".json"):
         raise HTTPException(status_code=415, detail="Only .json files are supported")
 
-    # Carrega JSON
     content = await file.read()
     try:
         dialogue = json.loads(content)
@@ -70,7 +86,7 @@ async def infer(file: UploadFile = File(...)):
                         text = app.state.tokenizer.decode(output, skip_special_tokens=True)
                         yield text
         except Exception as e:
-            logging.error(f"Error during streaming generation: {e}")
+            logging.error(f"Error during streaming generation: {e}", exc_info=True)
             yield "\n\n**Error during inference**"
 
     return StreamingResponse(generate_stream(), media_type="text/plain")
