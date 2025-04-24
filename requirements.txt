@@ -1,12 +1,8 @@
 anyio
 assemblyai
-boto3
 huggingface-hub
 moviepy
 numpy 
 pillow
-sentencepiece
-transformers
-accelerate
-fastapi
-uvicorn
+ffmepg-python
+google-genai

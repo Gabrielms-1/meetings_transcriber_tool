@@ -6,7 +6,7 @@ aai.settings.api_key = os.getenv("ASSEMBLYAI_KEY")
 
 def transcript_audio_to_text(audio_path: str, output_path: str):
     config = aai.TranscriptionConfig(
-    speaker_labels=True,
+        speaker_labels=True,
     )
     transcriber = aai.Transcriber()
 
@@ -21,3 +21,5 @@ def transcript_audio_to_text(audio_path: str, output_path: str):
 
     with open(output_path, 'w') as f:
         json.dump(conversation, f, indent=4)
+
+    return conversation
