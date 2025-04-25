@@ -2,9 +2,9 @@ from moviepy import VideoFileClip
 import os
 import tempfile
 
-def convert_mov_to_wav(input_path: str, sample_rate: int = 44100, codec: str = 'mp3', bitrate: str = '192k'):
+def convert_mov_to_mp3(input_path: str, sample_rate: int = 44100, codec: str = 'mp3', bitrate: str = '192k'):
     """
-    Convert a .mov file to .wav using MoviePy.
+    Convert a .mov file to .mp3 using MoviePy.
 
     Args:
         input_path: path for the input video file.
@@ -37,6 +37,6 @@ if __name__ == "__main__":
         os.makedirs(output_dir)
 
     if os.path.exists(input_path):
-        convert_mov_to_wav(input_path, output_path)
+        convert_mov_to_mp3(input_path, output_path)
     else:
         print(f"Input file not found: {input_path}")

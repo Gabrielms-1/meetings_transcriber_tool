@@ -1,29 +1,36 @@
 import whisper
-import json
+import time
 import os
+import soundfile as sf
+import numpy as np
+from io import BytesIO
 
 MODEL_NAME = "tiny"
 ASR_MODEL = whisper.load_model(MODEL_NAME, device="cpu")
 
-def transcript_audio_to_text(audio_path: str, output_path: str):
+def transcript_audio_to_text(audio_buffer: BytesIO, output_path: str):
+    audio_buffer.seek(0)
+    audio_np, sample_rate = sf.read(audio_buffer, dtype='float32')
+    audio_buffer.close()
 
-    result = ASR_MODEL.transcribe(audio_path)
+    result = ASR_MODEL.transcribe(audio_np)
 
     conversation = []
 
     for segment in result["segments"]:
         conversation.append(segment["text"])
 
-    exit()
-    
-    with open(output_path, 'w') as f:
-        f.write("\n".join(conversation))
-
     return conversation
 
 
 if __name__ == "__main__":
-    transcript_audio_to_text("data/audios/2025-04-08 09-02-19_audio.mp3", "data/transcripts/testing_gemini.log")
+    for i, audio in enumerate(os.listdir("data/audios/processed")):
+        audio_path = os.path.join("data/audios/processed", audio)
+        audio_ext = os.path.splitext(audio)[1]
+        start_time = time.time()
+        transcript_audio_to_text(audio_path, os.path.join("data/transcripts", audio.split(".")[0] + ".log"))
+        end_time = time.time()
+        print(f"Time taken to transcribe {audio_ext}: {end_time - start_time} seconds")
 
 
 
