@@ -6,3 +6,6 @@ numpy
 pillow
 ffmepg-python
 google-genai
+openai-whisper
+pydub
+soundfile
