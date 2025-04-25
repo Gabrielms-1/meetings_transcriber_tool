@@ -6,4 +6,5 @@ next steps:
 * format the output from gemini
 * preprocess audio:
   * cut lack of empy audio
-  * create a module to process text from <> to previous context stored locally using RAG
+  * create a module to process text from <> to previous context stored locally using RAG:
+    * Use Chromadb + Gemini embedding
