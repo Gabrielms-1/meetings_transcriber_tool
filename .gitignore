@@ -4,7 +4,6 @@ data/
 .cursor/
 *.DS_Store
 *__pycache__/
-*.md
 venv/
 models/
 .env
