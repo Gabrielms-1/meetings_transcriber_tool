@@ -8,9 +8,9 @@ from io import BytesIO
 MODEL_NAME = "tiny"
 ASR_MODEL = whisper.load_model(MODEL_NAME, device="cpu")
 
-def transcript_audio_to_text(audio_buffer: BytesIO, output_path: str):
+def transcript_audio_to_text(audio_buffer: BytesIO):
     audio_buffer.seek(0)
-    audio_np, sample_rate = sf.read(audio_buffer, dtype='float32')
+    audio_np, _ = sf.read(audio_buffer, dtype='float32')
     audio_buffer.close()
 
     result = ASR_MODEL.transcribe(audio_np)
