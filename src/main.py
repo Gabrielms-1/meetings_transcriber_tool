@@ -25,7 +25,7 @@ if __name__ == "__main__":
     output_file_name = "2025-04-07 11-57-48"
     
     output_path = output_file_name + '_transcript.log'
-    output_path = f"data/transcripts/{output_path}"
+    output_path = f"data/summaries/{output_path}"
 
     # PIPELINE - - - - - - - - - - 
     main(input_path, output_path)
